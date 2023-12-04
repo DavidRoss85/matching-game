@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matching Game</title>
+
+    <!-- Bootstrap CDN library. -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"
+    />
+
+    <!--Font Awesome CDN library-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" 
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+
+
+    <!-- For debugging --><!--Adds borders for visualization-->
+    <!-- <link rel="stylesheet" href="../../Debug/Tools/CSS/bootstrap-borders-styles.css"/> -->
+
+
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+    <header>
+        <div class="container-fluid justify-content-center text-center transparent-bar">
+            <div class="row">
+                <div class="col">
+                    <h1>Matching Game</h1>
+
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container-fluid justify-content-center text-center">
+            <div class="row smile-heading">
+                <div class="col-2">
+                    <img id="smiley1" src="./img/smile.png" alt="" class="img-fluid">
+                </div>
+                <div class="col">
+                    <span class="label-text">Do the two boxes match?</span>
+                    <br>
+                    <span class="small-text">There's an extra face in the box on the left!</span>
+                    <br/>
+                    <span class="med-text d-none d-sm-inline">Can you find it?... You better hurry!</span>
+                </div>
+                <div class="col-2 d-none d-sm-block">
+                    <img id="smiley2" src="./img/smile.png" alt="" class="img-fluid">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-2 my-auto">
+                    <button class="btn btn-success" id="letsGo">GO</button>
+                    <button class="btn btn-warning d-none" id="restartButton">Reset</button>
+                    <button class="btn btn-danger d-none" id="endButton">End</button>
+                    
+                </div>
+                <div class="col my-auto" id="optionsBox">
+                    <div class="row">
+                            <label class="col form-check-label text-sm-end" for="chkAudio">Audio On
+                                <input type="checkbox" class="form-check-input" checked="true" name="audio" id="chkAudio">
+                            </label>        
+                    </div>
+                    <div class="row">
+                            <label class="col form-check-label text-sm-end" for="chkHints" id="lblHints">Hints On
+                                <input type="checkbox" class="form-check-input" value="true" name="hints" id="chkHints">
+                            </label>
+                    </div>
+                    <div class="row">
+                        <label class="col form-check-label text-sm-end" for="chkSmall" id="lblSmall">Small Pics
+                            <input type="checkbox" class="form-check-input" value="true" name="smaller" id="chkSmall">
+                        </label>
+                    </div>
+                    <div class="row">
+                        <label class="col form-check-label text-sm-end" for="chkChallenge" id="lblChallenge">Time limit
+                            <input type="checkbox" class="form-check-input" value="true" name="challenge" id="chkChallenge" disabled>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="row">
+                        <div class="col my-auto" id="diffHead">
+                            Difficulty: 1
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" id="slideBox">
+                            <label for="diffSlide">Select:</label>
+                            <input type="range" value="1" id="diffSlide" name="diffSlide" min="1" max="10">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col my-auto d-none d-sm-block" id="promptText">
+                    Psshhh... EASY!
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col">
+                            <div class="label-text">
+                                Lives
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="heartsRow">
+                        <div class="col heart-icon">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <div class="col heart-icon">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <div class="col heart-icon">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <div class="col heart-icon">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <div class="col heart-icon">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <div class="label-text">
+                                Score
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <span id="playerScore">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 text-start">
+                    <div class="label-text">Time: </div>
+                    <span id="timer"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div id="leftSide"></div>
+                    
+                </div>
+                <div class="col">
+                    <div id="rightSide"></div>
+
+                </div>
+                <div class="col-2" id="timeKeeper">
+                    Bonus
+                </div>
+            </div>
+            <div class="row">
+            </div>        
+        </div>
+    </main>    
+    <footer>
+        <hr>
+        <div class="container-fluid text-center justify-content-center">
+            <div class="row">
+                <div class="col tiny-text">
+                    <h2>Do you have what it takes?</h2>
+                    Emojis Generated with AI ∙ December 3, 2023 from <a href="https://openai.com/d">Open AI</a> and <a href="https://www.bing.com/">Bing AI</a>
+                    <br>
+                    Sound Effects from 
+                    <a href="https://pixabay.com/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=47985">Pixabay</a>
+                    |
+                    Coded by <a href="https://www.github.com/DavidRoss85">David Ross</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- JavaScript -->
+    <!--Bootstrap script online-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" 
+        crossorigin="anonymous">
+    </script>
+
+
+   <script src="match.js"></script>
+</body>
+</html>
