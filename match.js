@@ -7,6 +7,7 @@ const theSlider = document.getElementById("diffSlide");
 const timeKeeper = document.getElementById("timeKeeper");
 const slideColumn = document.getElementById("slideBox");
 const optionsBox = document.getElementById("optionsBox");
+const boxText = document.getElementById("promptText");
 
 const FLAG_COLOR = "red";
 let imgPath = "./img/smile.png"
@@ -17,7 +18,7 @@ let rightSidePositon = (50 - theGameSize);
 
 let startAmount = 1;
 let numberOfFaces = startAmount;
-let difficultyGain = 1;
+let difficultyGain = 11;
 let startLives = 0;
 let runTime = false;
 let playerScore = 0;
@@ -34,6 +35,7 @@ let numberOfLives = startLives;
 let timePast = 0;
 let roundTime = 0;
 let hintTime = 0;
+let numHints = 1;
 let windowFlashing = false;
 
 window.addEventListener("load", firstLoad);
@@ -87,10 +89,11 @@ function defaultValues() {
         theImageSize = 2
     }
     penaltyCost = 100
-    difficultyGain = 7;
+    difficultyGain = 10;
     hintsOn = document.getElementById("chkHints").checked;
     audioOn = document.getElementById("chkAudio").checked;
     timeLimitOn = document.getElementById("chkChallenge").checked;
+    numHints = 1;
 }
 
 async function playGame() {
@@ -132,7 +135,10 @@ async function displayTimer(displayOn = true) {
         timePast += 1;
         roundTime += 1;
         hintTime += 1;
-
+        
+        //Cheat Codes
+        //giveHint();
+        
         let secCount = (timePast / 100) % 100;
         let minCount = (Math.floor(secCount / 60)) % 60
         let hrCount = (Math.floor(minCount / 60)) % 60
@@ -143,9 +149,10 @@ async function displayTimer(displayOn = true) {
         timeKeeper.childNodes[0].textContent = tempValue;
 
         if (hintsOn) {
-            if ((hintTime / 100) > roundNumber * difficultyGain) {
+            if ((hintTime / 100) > ((roundNumber * difficultyGain)/numHints)) {
                 giveHint();
                 hintTime = 0;
+                numHints += 1
             }
         }
     }
@@ -183,6 +190,12 @@ function generateFaces() {
 
     theLeftSide.lastElementChild.addEventListener('click', nextLevel);
     theLeftSide.lastElementChild.removeEventListener('click', wrongAnswer);
+    console.log(numberOfFaces);
+
+    //Skip to lvl 100
+    // if (roundNumber < 100){
+    //     nextLevel();
+    // }
 
 }
 
@@ -197,7 +210,9 @@ function nextLevel(event) {
     updateScore();
     roundTime = 0;
     numPenalties = 0;
+    numHints = 1;
     generateFaces();
+    boxText.textContent = "Round: " + roundNumber
 }
 
 function wrongAnswer(event) {
@@ -312,10 +327,12 @@ function setDifficulty(level = 1) {
             startLives += 1;
             theImageSize += 1;
             difficultyGain -= 1;
+            difficultyGain -= 1;
         case 2:
             startLives += 1;
             startBonus -= 200;
             theImageSize += 1;
+            difficultyGain -= 1;
         case 3:
             startLives += 1;
             startBonus -= 200;
@@ -333,6 +350,7 @@ function setDifficulty(level = 1) {
             startLives += 1;
             startBonus -= 200;
             theImageSize += 1;
+            difficultyGain -= 1;
         case 7:
             startLives += 1;
             startBonus -= 200;
@@ -377,13 +395,13 @@ function addRoundTimeRecord(time) {
 }
 
 function slideUpdate() {
-    const boxText = document.getElementById("promptText");
+   
     let tempText = "";
     let smileySrc = "./img/smile.png";
     switch (parseInt(theSlider.value)) {
         case 1:
             tempText = "Psshhh... EASY!";
-            smileySrc = "./img/Emoji-Nap.png";
+            smileySrc = "./img/Emoji-Drool.png";
             break;
         case 2:
             tempText = "Stepping it up I see...";
@@ -399,11 +417,11 @@ function slideUpdate() {
             break;
         case 5:
             tempText = "Hold on...";
-            smileySrc = "./img/Emoji-Perturbed.png";
+            smileySrc = "./img/Emoji-Concerned.png";
             break;
         case 6:
             tempText = "Oh? looks like a challenge!";
-            smileySrc = "./img/Emoji-Concerned.png";
+            smileySrc = "./img/Emoji-Gasp.png";
             break;
         case 7:
             tempText = "Things are getting a bit crazy.";
