@@ -14,6 +14,7 @@ let imgPath = "./img/smile.png"
 
 let theGameSize = 40;
 let theImageSize = 5;
+let theGameSizeUnit = "vw";
 let rightSidePositon = (50 - theGameSize);
 
 let startAmount = 1;
@@ -39,6 +40,7 @@ let numHints = 1;
 let windowFlashing = false;
 
 window.addEventListener("load", firstLoad);
+window.addEventListener("resize",setGameSize);
 theGoButton.addEventListener("click", readySetGo);
 theRestartButton.addEventListener("click", restartGame);
 theEndButton.addEventListener("click", gameOver)
@@ -82,7 +84,7 @@ function readySetGo() {
 function defaultValues() {
     startBonus = 3000;
     numberOfLives = 10;
-    theGameSize = 40;
+    setGameSize();
     if (document.getElementById("chkSmall").checked) {
         theImageSize = 0
     } else {
@@ -161,11 +163,25 @@ async function displayTimer(displayOn = true) {
     }
 }
 
-function generateFaces() {
+function setGameSize(){
+    //If window width is greater than height size according to height and vice versa
+    if(document.body.clientHeight < document.body.clientWidth){
+        theGameSize = 40;
+        theGameSizeUnit = "vh";
+    }else{
+        theGameSize = 40;
+        theGameSizeUnit="vw";
+    }
+    
     //set the game size
-    document.documentElement.style.setProperty("--game-size", `${theGameSize}vw`);
-    document.documentElement.style.setProperty("--image-size", `${theImageSize}vw`);
-    document.documentElement.style.setProperty("--right-position", `${rightSidePositon}vw`);
+    document.documentElement.style.setProperty("--game-size", `${theGameSize}${theGameSizeUnit}`);
+    document.documentElement.style.setProperty("--image-size", `${theImageSize}${theGameSizeUnit}`);
+    document.documentElement.style.setProperty("--right-position", `${rightSidePositon}${theGameSizeUnit}`);
+
+}
+function generateFaces() {
+
+    setGameSize();
 
     for (i = 0; i < numberOfFaces; i++) {
         const face = document.createElement("img");
@@ -174,8 +190,8 @@ function generateFaces() {
         let randomTop = Math.floor((Math.random() * (theGameSize - theImageSize)) + 1);
         let randomLeft = Math.floor((Math.random() * (theGameSize - theImageSize)) + 1);
 
-        face.style.top = randomTop + "vw";
-        face.style.left = randomLeft + "vw";
+        face.style.top = randomTop + theGameSizeUnit;
+        face.style.left = randomLeft + theGameSizeUnit;
 
         theLeftSide.appendChild(face);
         theLeftSide.childNodes[i].addEventListener("click", wrongAnswer);

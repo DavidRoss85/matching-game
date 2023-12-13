@@ -12,7 +12,8 @@ body{
     height: 100vh;
     color: rgb(0, 0, 0);
     text-shadow: azure;
-    font-size: 2.5vw;
+    font-size: min(15px, 2.5vw);
+    /* font-size: 2.5vw; */
     font-weight:bolder;
 }
 
@@ -45,7 +46,7 @@ body{
 .btn{
     min-width: 50px;
     border: solid 1px black;
-    font-size: 2.5vw;
+    font-size: min(20px,2.5vw);
     transition-duration: .5s;
 }
 .smile-heading img{
@@ -58,10 +59,10 @@ body{
     font-weight: bolder;
 }
 .small-text{
-    font-size:2.5vw;
+    font-size:min(20px,2.5vw);
 }
 .med-text{
-    font-size:2.8vw
+    font-size:min(20px,2.8vw);
 }
 .tiny-text{
     font-size: .7em;
@@ -84,8 +85,8 @@ body{
 .transparent-bar-nav {
     background: linear-gradient(to bottom,rgba(0,0,0,1),rgba(0,0,0,.8)); 
     margin:0px;
-    border: 1px;
-    padding: 1px;
+    border: 0px;
+    padding: 0px;
 }
 .earthquake{
     animation-name: rough-shake;
