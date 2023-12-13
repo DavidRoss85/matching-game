@@ -54,10 +54,17 @@ async function sleep(time) {
 };
 
 function firstLoad() {
-    addSound("./audio/clock-ticking.mp3", "sound");
-    addSound("./audio/wrong.mp3", "wrong");
-    addSound("./audio/buzzer.mp3", "timeUp");
-    addSound("./audio/film-countdown.mp3", "countSound");
+    const mySounds = [
+        require("url:/audio/clock-ticking.mp3"),
+        require("url:./audio/wrong.mp3"),
+        require("url:./audio/buzzer.mp3"),
+        require("url:./audio/film-countdown.mp3")
+    ];
+    
+    addSound(mySounds[0], "sound");
+    addSound(mySounds[1], "wrong");
+    addSound(mySounds[2], "timeUp");
+    addSound(mySounds[3], "countSound");
     defaultValues();
     slideUpdate();
 }
@@ -402,49 +409,50 @@ function addRoundTimeRecord(time) {
 }
 
 function slideUpdate() {
-
+    
     let tempText = "";
-    let smileySrc = "./img/smile.png";
+    let smileySrc = require("./img/smile.png");
+
     switch (parseInt(theSlider.value)) {
         case 1:
             tempText = "Psshhh... EASY!";
-            smileySrc = "./img/Emoji-Drool.png";
+            smileySrc = require("./img/Emoji-Drool.png");
             break;
         case 2:
             tempText = "Stepping it up I see...";
-            smileySrc = "./img/Emoji-Nap.png";
+            smileySrc = require("./img/Emoji-Nap.png");
             break;
         case 3:
             tempText = "Okay, not bad.";
-            smileySrc = "./img/Emoji-Chill.png";
+            smileySrc = require("./img/Emoji-Chill.png");
             break;
         case 4:
             tempText = "Hmmm... is it time to pay attention?.";
-            smileySrc = "./img/Emoji-Perturbed.png";
+            smileySrc = require("./img/Emoji-Perturbed.png");
             break;
         case 5:
             tempText = "Hold on...";
-            smileySrc = "./img/Emoji-Concerned.png";
+            smileySrc = require("./img/Emoji-Concerned.png");
             break;
         case 6:
             tempText = "Oh? looks like a challenge!";
-            smileySrc = "./img/Emoji-Gasp.png";
+            smileySrc = require("./img/Emoji-Gasp.png");
             break;
         case 7:
             tempText = "Things are getting a bit crazy.";
-            smileySrc = "./img/Emoji-Shocked.png";
+            smileySrc = require("./img/Emoji-Shocked.png");
             break;
         case 8:
             tempText = "You really should reconsider...";
-            smileySrc = "./img/Emoji-Angry.png";
+            smileySrc = require("./img/Emoji-Angry.png");
             break;
         case 9:
             tempText = "Stop! Are you insane??";
-            smileySrc = "./img/Emoji-More-Angry.png";
+            smileySrc = require("./img/Emoji-More-Angry.png");
             break;
         case 10:
             tempText = "HOLY $%^&#@! Call the police!";
-            smileySrc = "./img/Emoji-On-Fire.png";
+            smileySrc = require("./img/Emoji-On-Fire.png");
             break;
 
     }
@@ -455,7 +463,7 @@ function slideUpdate() {
     const bgColorMath = (20 * parseInt(theSlider.value))
     document.documentElement.style.setProperty("--background-color-var", `${bgColorMath}`)
     document.getElementById("diffHead").textContent = "Difficulty: " + parseInt(theSlider.value);
-    document.getElementById("smiley1").setAttribute("src", smileySrc);
+    document.getElementById("smiley1").src= smileySrc;
     document.getElementById("smiley2").setAttribute("src", smileySrc);
     imgPath = smileySrc;
     boxText.textContent = tempText;

@@ -5,7 +5,7 @@
   "source": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parel build",
+    "build": "parcel build --no-optimize",
     "start": "parcel --open"
   },
   "repository": {
@@ -13,7 +13,7 @@
     "url": "git+https://github.com/DavidRoss85/matching-game.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "David Ross",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/DavidRoss85/matching-game/issues"
