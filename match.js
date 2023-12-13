@@ -20,7 +20,6 @@ let rightSidePositon = (50 - theGameSize);
 let startAmount = 1;
 let numberOfFaces = startAmount;
 let difficultyGain = 11;
-let startLives = 0;
 let runTime = false;
 let playerScore = 0;
 let penaltyCost = 100;
@@ -29,18 +28,21 @@ let startBonus = 3000;
 let hintsOn = false;
 let audioOn = true;
 let timeLimitOn = false;
+let countDownPlaying = false;
 
 let roundNumber = 1;
 let numberOfGames = 1;
-let numberOfLives = startLives;
+let numberOfLives = 0;
 let timePast = 0;
 let roundTime = 0;
 let hintTime = 0;
+let timeLimit = 600;
+let timeLeft = 1500;
 let numHints = 1;
 let windowFlashing = false;
 
 window.addEventListener("load", firstLoad);
-window.addEventListener("resize",setGameSize);
+window.addEventListener("resize", setGameSize);
 theGoButton.addEventListener("click", readySetGo);
 theRestartButton.addEventListener("click", restartGame);
 theEndButton.addEventListener("click", gameOver)
@@ -55,6 +57,7 @@ function firstLoad() {
     addSound("./audio/clock-ticking.mp3", "sound");
     addSound("./audio/wrong.mp3", "wrong");
     addSound("./audio/buzzer.mp3", "timeUp");
+    addSound("./audio/film-countdown.mp3", "countSound");
     defaultValues();
     slideUpdate();
 }
@@ -64,7 +67,6 @@ function readySetGo() {
     setDifficulty(parseInt(theSlider.value));
 
     numberOfFaces = startAmount;
-    numberOfLives = startLives;
     playerScore = 0;
     roundNumber = 1;
     timePast = 0;
@@ -76,6 +78,7 @@ function readySetGo() {
     optionsBox.classList.add("d-none");
 
     playSound("sound", true);
+    // playSound("countSound");
     updateScore()
     updateHealth(numberOfLives);
     playGame();
@@ -83,18 +86,21 @@ function readySetGo() {
 
 function defaultValues() {
     startBonus = 3000;
-    numberOfLives = 10;
+    numberOfLives = 0;
     setGameSize();
+    document.getElementById("timeLeft").classList.add("d-none");
     if (document.getElementById("chkSmall").checked) {
-        theImageSize = 0
+        theImageSize = -2
     } else {
         theImageSize = 2
     }
     penaltyCost = 100
-    difficultyGain = 10;
+    difficultyGain = 11;
     hintsOn = document.getElementById("chkHints").checked;
     audioOn = document.getElementById("chkAudio").checked;
     timeLimitOn = document.getElementById("chkChallenge").checked;
+    timeLimit = 600;
+    timeLeft = timeLimit;
     numHints = 1;
 }
 
@@ -137,13 +143,14 @@ async function displayTimer(displayOn = true) {
         timePast += 1;
         roundTime += 1;
         hintTime += 1;
-        
+
         //Cheat Codes
         //giveHint();
-        
-        let secCount = (timePast / 100) % 100;
-        let minCount = (Math.floor(secCount / 60)) % 60
-        let hrCount = (Math.floor(minCount / 60)) % 60
+
+        let secCount = (timePast / 100) % 60;
+        secCount = secCount.toFixed(2);
+        let minCount = (Math.floor(timePast / 100 / 60)) % 60
+        let hrCount = (Math.floor(timePast / 100 / 60 / 60)) % 60
 
         let tempValue = calculateBonus();
         if (tempValue > 0) tempValue = `+${tempValue}`;
@@ -151,28 +158,52 @@ async function displayTimer(displayOn = true) {
         timeKeeper.childNodes[0].textContent = tempValue;
 
         if (hintsOn) {
-            if ((hintTime / 100) > ((roundNumber * difficultyGain)/numHints)) {
+            if ((hintTime / 100) > ((roundNumber) / numHints)) {
                 giveHint();
                 hintTime = 0;
                 numHints += 1
             }
         }
+        if (timeLimitOn) {
+            timeLeft -= 1
+            document.getElementById("timeLeft").classList.remove("d-none");
+            document.getElementById("countdown").textContent = Math.ceil(timeLeft / 100);
+            if (timeLeft <= 500) {
+                document.getElementById("countdown").classList.add("pulsate-text");
+                if (!countDownPlaying && !!runTime) {
+                    playSound("countSound");
+                    countDownPlaying = true;
+                }
+            } else {
+                document.getElementById("countdown").classList.remove("pulsate-text");
+                stopSound("countSound");
+                countDownPlaying = false;
+            }
+            if (timeLeft <= 0) {
+                timeLeft = 0;
+                gameOver();
+            }
+        } else {
+            timeLeft = timeLimit;
+            document.getElementById("timeLeft").classList.add("d-none");
+        }
+
     }
     if (!displayOn) {
         document.getElementById("timer").textContent = `0:0:0`;
     }
 }
 
-function setGameSize(){
+function setGameSize() {
     //If window width is greater than height size according to height and vice versa
-    if(document.body.clientHeight < document.body.clientWidth){
+    if (document.body.clientHeight < document.body.clientWidth) {
         theGameSize = 40;
         theGameSizeUnit = "vh";
-    }else{
+    } else {
         theGameSize = 40;
-        theGameSizeUnit="vw";
+        theGameSizeUnit = "vw";
     }
-    
+
     //set the game size
     document.documentElement.style.setProperty("--game-size", `${theGameSize}${theGameSizeUnit}`);
     document.documentElement.style.setProperty("--image-size", `${theImageSize}${theGameSizeUnit}`);
@@ -227,6 +258,7 @@ function nextLevel(event) {
     roundTime = 0;
     numPenalties = 0;
     numHints = 1;
+    timeLeft = timeLimit;
     generateFaces();
     boxText.textContent = "Round: " + roundNumber
 }
@@ -274,10 +306,12 @@ function gameOver() {
     slideColumn.classList.add("d-none");
     optionsBox.classList.add("d-none");
 
+    runTime = false;
     stopSound();
+    stopSound("countSound");
+    countDownPlaying = false;
     playSound("timeUp", false, 1);
     clearTheScreen();
-    runTime = false;
     document.getElementById("promptText").textContent = "GAME OVER";
 
 }
@@ -308,12 +342,12 @@ function restartGame(event) {
     slideColumn.classList.remove("d-none");
     optionsBox.classList.remove("d-none");
 
-    theSlider.value = 1;
+    // theSlider.value = 1;
     slideUpdate();
     playerScore = 0;
     updateScore();
-    numberOfLives = 10;
-    updateHealth(numberOfLives);
+    // numberOfLives = 10;
+    // updateHealth(numberOfLives);
     displayTimer(false);
 
 }
@@ -336,59 +370,16 @@ async function flashItem(item, flashColor = FLAG_COLOR) {
 }
 
 function setDifficulty(level = 1) {
-    startLives = 0;
-
-    switch (level) {
-        case 1:
-            startLives += 1;
-            theImageSize += 1;
-            difficultyGain -= 1;
-            difficultyGain -= 1;
-        case 2:
-            startLives += 1;
-            startBonus -= 200;
-            theImageSize += 1;
-            difficultyGain -= 1;
-        case 3:
-            startLives += 1;
-            startBonus -= 200;
-            theImageSize += 1;
-            difficultyGain -= 1;
-        case 4:
-            startLives += 1;
-            startBonus -= 200;
-        case 5:
-            startLives += 1;
-            startBonus -= 200;
-            theImageSize += 1;
-            difficultyGain -= 1;
-        case 6:
-            startLives += 1;
-            startBonus -= 200;
-            theImageSize += 1;
-            difficultyGain -= 1;
-        case 7:
-            startLives += 1;
-            startBonus -= 200;
-            theImageSize += 1;
-            difficultyGain -= 1;
-        case 8:
-            startLives += 1;
-            startBonus -= 200;
-            theImageSize += 1;
-        case 9:
-            startLives += 1;
-            startBonus -= 200;
-            theImageSize += 1;
-            difficultyGain -= 1;
-        case 10:
-            startLives += 1;
-            startBonus -= 200;
-            theImageSize += 1;
-            difficultyGain -= 1;
-
+    //harder for each level
+    for (let i = level; i < 11; i++) {
+        numberOfLives += 1;
+        startBonus -= 200;
+        theImageSize += 1;
+        difficultyGain -= 1;
+        timeLimit += 100;
+        timeLeft+=100;
     }
-    if (theImageSize <= 0) theImageSize = 2;
+    if (theImageSize <= 0) theImageSize = .5;
 }
 
 function calculateBonus() {
@@ -411,7 +402,7 @@ function addRoundTimeRecord(time) {
 }
 
 function slideUpdate() {
-   
+
     let tempText = "";
     let smileySrc = "./img/smile.png";
     switch (parseInt(theSlider.value)) {
@@ -457,6 +448,10 @@ function slideUpdate() {
             break;
 
     }
+    defaultValues();
+    setDifficulty(parseInt(theSlider.value));
+    updateHealth(numberOfLives);
+
     const bgColorMath = (20 * parseInt(theSlider.value))
     document.documentElement.style.setProperty("--background-color-var", `${bgColorMath}`)
     document.getElementById("diffHead").textContent = "Difficulty: " + parseInt(theSlider.value);

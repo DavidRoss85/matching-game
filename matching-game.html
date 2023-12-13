@@ -44,7 +44,7 @@
                 <div class="col">
                     <span class="label-text">Do the two boxes match?</span>
                     <br>
-                    <span class="small-text">There's an extra face in the box on the left!</span>
+                    <span class="small-text">Click on the extra face in left box below!</span>
                     <br/>
                     <span class="med-text d-none d-sm-inline">Can you find it?... You better hurry!</span>
                 </div>
@@ -55,7 +55,7 @@
 
             <div class="row">
                 <div class="col-2 my-auto">
-                    <button class="btn btn-success" id="letsGo">GO</button>
+                    <button class="btn btn-success" id="letsGo">BEGIN</button>
                     <button class="btn btn-warning d-none" id="restartButton">Reset</button>
                     <button class="btn btn-danger d-none" id="endButton">End</button>
                     
@@ -72,13 +72,13 @@
                             </label>
                     </div>
                     <div class="row">
-                        <label class="col form-check-label text-sm-end" for="chkSmall" id="lblSmall">Small Pics
+                        <label class="col form-check-label text-sm-end" for="chkSmall" id="lblSmall">Smaller Faces
                             <input type="checkbox" class="form-check-input" value="true" name="smaller" id="chkSmall">
                         </label>
                     </div>
                     <div class="row">
                         <label class="col form-check-label text-sm-end" for="chkChallenge" id="lblChallenge">Time limit
-                            <input type="checkbox" class="form-check-input" value="true" name="challenge" id="chkChallenge" disabled>
+                            <input type="checkbox" class="form-check-input" value="true" name="challenge" id="chkChallenge">
                         </label>
                     </div>
                 </div>
@@ -105,31 +105,48 @@
             <div class="row">
                 <div class="col-8">
                     <div class="row">
-                        <div class="col">
-                            <div class="label-text">
-                                Lives
+                        <div class="col-8">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="label-text">
+                                        Lives
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="heartsRow">
+                                <div class="col heart-icon">
+                                    <i class="fa-solid fa-heart"></i>
+                                </div>
+                                <div class="col heart-icon">
+                                    <i class="fa-solid fa-heart"></i>
+                                </div>
+                                <div class="col heart-icon">
+                                    <i class="fa-solid fa-heart"></i>
+                                </div>
+                                <div class="col heart-icon">
+                                    <i class="fa-solid fa-heart"></i>
+                                </div>
+                                <div class="col heart-icon">
+                                    <i class="fa-solid fa-heart"></i>
+                                </div>
+        
                             </div>
                         </div>
-                    </div>
-                    <div class="row" id="heartsRow">
-                        <div class="col heart-icon">
-                            <i class="fa-solid fa-heart"></i>
-                        </div>
-                        <div class="col heart-icon">
-                            <i class="fa-solid fa-heart"></i>
-                        </div>
-                        <div class="col heart-icon">
-                            <i class="fa-solid fa-heart"></i>
-                        </div>
-                        <div class="col heart-icon">
-                            <i class="fa-solid fa-heart"></i>
-                        </div>
-                        <div class="col heart-icon">
-                            <i class="fa-solid fa-heart"></i>
+                        <div class="col d-none" id="timeLeft">
+                            <div class="row">
+                                <div class="col text-nowrap">
+                                    Time Left:
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div id="countdown" class="col">
+                                    <!-- <span >0</span> -->
+                                </div>
+                            </div>
                         </div>
 
+                        </div>
                     </div>
-                </div>
                 <div class="col">
                     <div class="row">
                         <div class="col">

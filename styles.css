@@ -67,6 +67,13 @@ body{
 .tiny-text{
     font-size: .7em;
 }
+.pulsate-text{
+    animation-name: pulsate;
+    animation-duration: 1s;
+    animation-timing-function:ease-in-out;
+    animation-iteration-count: infinite;
+    z-index: 100;
+}
 .transparent-box{
     /* display: inline-block; */
     background-color: rgba(0,0,0,.8);
@@ -111,4 +118,10 @@ body{
 
 @keyframes slide-in{
     0%{transform: translateX(100%)}
+}
+
+@keyframes pulsate{
+    /* 0%{transform:translateX(100%);} */
+    50%{transform: scale(4);color: red;}
+    100%{transform: scale(1);}
 }
