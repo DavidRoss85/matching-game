@@ -10,7 +10,7 @@ const optionsBox = document.getElementById("optionsBox");
 const boxText = document.getElementById("promptText");
 
 const FLAG_COLOR = "red";
-let imgPath = "./img/smile.png"
+let imgPath = require("./img/smile.png");
 
 let theGameSize = 40;
 let theImageSize = 5;
