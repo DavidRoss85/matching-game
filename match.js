@@ -209,25 +209,25 @@ async function displayTimer(displayOn = true) {
 function setGameSize() {
     //If window width is greater than height size according to height and vice versa
     if (document.body.clientHeight < document.body.clientWidth) {
-        theGameWidth = 40;
+        //theGameWidth = 40;
         theMaxWidth = 40;
-        theGameHeight = 80;
+        //theGameHeight = 80;
         theMaxHeight = 80;
         //theGameSizeUnit = "vh";
-        document.getElementById("tcheck").textContent = "Fat"
+        //document.getElementById("tcheck").textContent = "Fat"
     } else {
-        theGameWidth = 80;
+        //theGameWidth = 80;
         theMaxWidth = 80;
-        theGameHeight = 50;
-        theMaxHeight = 50;
-        document.getElementById("tcheck").textContent = "Skinny"
+        //theGameHeight = 50;
+        theMaxHeight = 40;
+        //document.getElementById("tcheck").textContent = "Skinny"
 
     }
 
     //set the game size
-    document.documentElement.style.setProperty("--game-width", `${theGameWidth}vw`);
+    // document.documentElement.style.setProperty("--game-width", `${theGameWidth}vw`);
     document.documentElement.style.setProperty("--game-max-width", `${theMaxWidth}vw`);
-    document.documentElement.style.setProperty("--game-height", `${theGameHeight}vh`);
+    // document.documentElement.style.setProperty("--game-height", `${theGameHeight}vh`);
     document.documentElement.style.setProperty("--game-max-height", `${theMaxHeight}vh`);
 
     document.documentElement.style.setProperty("--image-size", `${theImageSize}vw`);

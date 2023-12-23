@@ -26,11 +26,13 @@ body{
 }
 
 #rightSide, #leftSide{
-    position:absolute;
-    width: var(--game-width);
+    position:relative;
+    /* width: 100%; */
+    height: 50vh;
+    /* width: var(--game-width);
     height:var(--game-height);
     max-width: var(--game-max-width);
-    max-height: var(--game-max-height);
+    max-height: var(--game-max-height); */
     border: 4px solid;
     border-color: var(--box-color);
     background-color: cadetblue;
