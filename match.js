@@ -12,14 +12,9 @@ const boxText = document.getElementById("promptText");
 const FLAG_COLOR = "red";
 let imgPath = require("./img/smile.png");
 
-let theGameSize = 40;
-let theGameWidth = 40;
-let theGameHeight = 40;
 let theMaxWidth = 50;
 let theMaxHeight = 50;
 let theImageSize = 5;
-let theGameSizeUnit = "vw";
-let rightSidePositon = (50 - theGameSize);
 
 let startAmount = 1;
 let numberOfFaces = startAmount;
@@ -209,44 +204,38 @@ async function displayTimer(displayOn = true) {
 function setGameSize() {
     //If window width is greater than height size according to height and vice versa
     if (document.body.clientHeight < document.body.clientWidth) {
-        //theGameWidth = 40;
         theMaxWidth = 40;
-        //theGameHeight = 80;
         theMaxHeight = 80;
-        //theGameSizeUnit = "vh";
-        //document.getElementById("tcheck").textContent = "Fat"
     } else {
-        //theGameWidth = 80;
-        theMaxWidth = 80;
-        //theGameHeight = 50;
+        theMaxWidth = 100;
         theMaxHeight = 40;
-        //document.getElementById("tcheck").textContent = "Skinny"
 
     }
 
     //set the game size
-    // document.documentElement.style.setProperty("--game-width", `${theGameWidth}vw`);
     document.documentElement.style.setProperty("--game-max-width", `${theMaxWidth}vw`);
-    // document.documentElement.style.setProperty("--game-height", `${theGameHeight}vh`);
     document.documentElement.style.setProperty("--game-max-height", `${theMaxHeight}vh`);
-
     document.documentElement.style.setProperty("--image-size", `${theImageSize}vw`);
-    // document.documentElement.style.setProperty("--game-size", `${theGameSize}${theGameSizeUnit}`);
-    // document.documentElement.style.setProperty("--right-position", `${rightSidePositon}${theGameSizeUnit}`);
 
 }
 function generateFaces() {
 
     setGameSize();
 
-    for (i = 0; i < numberOfFaces; i++) {
+    for (let i = 0; i < numberOfFaces; i++) {
         const face = document.createElement("img");
         face.src = imgPath;
+        face.style.width = theImageSize + "vw"
+        face.style.height = theImageSize + "vw"
+        // console.log(theImageSize)
+        let randomTop = Math.floor((Math.random() * 100) + 1);
+        let randomLeft = Math.floor((Math.random() * 100) + 1);
 
-        let randomTop = Math.floor((Math.random() * 100) + 1) -theImageSize;
-        let randomLeft = Math.floor((Math.random() * 100) + 1)-theImageSize;
-        randomTop = randomTop<1 ? 1 : randomTop
+        randomLeft-=  (((theImageSize/100)*document.body.clientWidth) / theLeftSide.clientWidth)*100;
         randomLeft = randomLeft<1 ? 1 : randomLeft
+
+        randomTop-=  (((theImageSize/100)*document.body.clientHeight) / theLeftSide.clientHeight)*100;
+        randomTop = randomTop<1 ? 1 : randomTop
 
         face.style.top = randomTop + "%";//theGameSizeUnit;
         face.style.left = randomLeft + "%";// theGameSizeUnit;
