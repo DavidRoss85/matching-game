@@ -1,5 +1,8 @@
 :root{
-    --game-size: 40vw;
+    --game-width: 40vw;
+    --game-height: 40vh;
+    --game-max-width: 40vw;
+    --game-max-height:40vh;
     --image-size: 2vw;
     --right-position: 10vw;
     --box-color: rgb(0,0,0);
@@ -23,9 +26,11 @@ body{
 }
 
 #rightSide, #leftSide{
-    position: absolute;
-    width: var(--game-size);
-    height:var(--game-size);
+    position:absolute;
+    width: var(--game-width);
+    height:var(--game-height);
+    max-width: var(--game-max-width);
+    max-height: var(--game-max-height);
     border: 4px solid;
     border-color: var(--box-color);
     background-color: cadetblue;

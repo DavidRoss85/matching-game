@@ -13,6 +13,10 @@ const FLAG_COLOR = "red";
 let imgPath = require("./img/smile.png");
 
 let theGameSize = 40;
+let theGameWidth = 40;
+let theGameHeight = 40;
+let theMaxWidth = 50;
+let theMaxHeight = 50;
 let theImageSize = 5;
 let theGameSizeUnit = "vw";
 let rightSidePositon = (50 - theGameSize);
@@ -113,6 +117,7 @@ function defaultValues() {
 
 async function playGame() {
     displayTimer(true);
+    window.location.href = "#leftSide"
     generateFaces()
 }
 
@@ -204,17 +209,30 @@ async function displayTimer(displayOn = true) {
 function setGameSize() {
     //If window width is greater than height size according to height and vice versa
     if (document.body.clientHeight < document.body.clientWidth) {
-        theGameSize = 40;
-        theGameSizeUnit = "vh";
+        theGameWidth = 40;
+        theMaxWidth = 40;
+        theGameHeight = 80;
+        theMaxHeight = 80;
+        //theGameSizeUnit = "vh";
+        document.getElementById("tcheck").textContent = "Fat"
     } else {
-        theGameSize = 40;
-        theGameSizeUnit = "vw";
+        theGameWidth = 80;
+        theMaxWidth = 80;
+        theGameHeight = 50;
+        theMaxHeight = 50;
+        document.getElementById("tcheck").textContent = "Skinny"
+
     }
 
     //set the game size
-    document.documentElement.style.setProperty("--game-size", `${theGameSize}${theGameSizeUnit}`);
-    document.documentElement.style.setProperty("--image-size", `${theImageSize}${theGameSizeUnit}`);
-    document.documentElement.style.setProperty("--right-position", `${rightSidePositon}${theGameSizeUnit}`);
+    document.documentElement.style.setProperty("--game-width", `${theGameWidth}vw`);
+    document.documentElement.style.setProperty("--game-max-width", `${theMaxWidth}vw`);
+    document.documentElement.style.setProperty("--game-height", `${theGameHeight}vh`);
+    document.documentElement.style.setProperty("--game-max-height", `${theMaxHeight}vh`);
+
+    document.documentElement.style.setProperty("--image-size", `${theImageSize}vw`);
+    // document.documentElement.style.setProperty("--game-size", `${theGameSize}${theGameSizeUnit}`);
+    // document.documentElement.style.setProperty("--right-position", `${rightSidePositon}${theGameSizeUnit}`);
 
 }
 function generateFaces() {
@@ -225,11 +243,13 @@ function generateFaces() {
         const face = document.createElement("img");
         face.src = imgPath;
 
-        let randomTop = Math.floor((Math.random() * (theGameSize - theImageSize)) + 1);
-        let randomLeft = Math.floor((Math.random() * (theGameSize - theImageSize)) + 1);
+        let randomTop = Math.floor((Math.random() * 100) + 1) -theImageSize;
+        let randomLeft = Math.floor((Math.random() * 100) + 1)-theImageSize;
+        randomTop = randomTop<1 ? 1 : randomTop
+        randomLeft = randomLeft<1 ? 1 : randomLeft
 
-        face.style.top = randomTop + theGameSizeUnit;
-        face.style.left = randomLeft + theGameSizeUnit;
+        face.style.top = randomTop + "%";//theGameSizeUnit;
+        face.style.left = randomLeft + "%";// theGameSizeUnit;
 
         theLeftSide.appendChild(face);
         theLeftSide.childNodes[i].addEventListener("click", wrongAnswer);
@@ -244,7 +264,7 @@ function generateFaces() {
 
     theLeftSide.lastElementChild.addEventListener('click', nextLevel);
     theLeftSide.lastElementChild.removeEventListener('click', wrongAnswer);
-    console.log(numberOfFaces);
+    //console.log(numberOfFaces);
 
     //Skip to lvl 100
     // if (roundNumber < 100){

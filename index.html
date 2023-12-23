@@ -26,7 +26,7 @@
 
 
     <!-- For debugging --><!--Adds borders for visualization-->
-    <!-- <link rel="stylesheet" href="../../Debug/Tools/CSS/bootstrap-borders-styles.css"/> -->
+    <link rel="stylesheet" href="../Debug/Tools/CSS/bootstrap-borders-styles.css"/>
 
 
     <link rel="stylesheet" href="styles.css">
@@ -37,7 +37,16 @@
         <div class="container-fluid justify-content-center text-center transparent-bar">
             <div class="row">
                 <div class="col">
-                    <h1>Matching Game</h1>
+                    <h1 id="tcheck">Matching Game</h1>
+                    <!--for debug (Displays BS viewport)-->
+                    <div class="col-1" style="color:white; background-color: black;">
+                        <span class="d-sm-none">XS View</span>
+                        <span class="d-none d-sm-inline d-md-none">SM View</span>
+                        <span class="d-none d-md-inline d-lg-none">MD View</span>
+                        <span class="d-none d-lg-inline d-xl-none">LG View</span>
+                        <span class="d-none d-xl-inline">XL View</span>
+                    </div>
+
 
                 </div>
             </div>
@@ -174,19 +183,21 @@
                     <span id="timer"></span>
                 </div>
             </div>
+            <!-- Columns for gameplay -->
             <div class="row">
-                <div class="col">
+                <div class="col p-0">
                     <div id="leftSide"></div>
                     
                 </div>
-                <div class="col">
+                <div class="col p-0">
                     <div id="rightSide"></div>
 
                 </div>
-                <div class="col-2" id="timeKeeper">
+                <div class="col-2 d-none d-md-inline-block" id="timeKeeper">
                     Bonus
                 </div>
             </div>
+
             <div class="row">
             </div>        
         </div>
