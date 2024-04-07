@@ -14,7 +14,7 @@ let imgPath = require("./img/smile.png");
 
 let theMaxWidth = 50;
 let theMaxHeight = 50;
-let theImageSize = 5;
+let theImageSize = 10;
 
 let startAmount = 1;
 let numberOfFaces = startAmount;
@@ -215,7 +215,7 @@ function setGameSize() {
     //set the game size
     document.documentElement.style.setProperty("--game-max-width", `${theMaxWidth}vw`);
     document.documentElement.style.setProperty("--game-max-height", `${theMaxHeight}vh`);
-    document.documentElement.style.setProperty("--image-size", `${theImageSize}vw`);
+    document.documentElement.style.setProperty("--image-size", `${theImageSize}px`);
 
 }
 function generateFaces() {
@@ -225,8 +225,8 @@ function generateFaces() {
     for (let i = 0; i < numberOfFaces; i++) {
         const face = document.createElement("img");
         face.src = imgPath;
-        face.style.width = theImageSize + "vw"
-        face.style.height = theImageSize + "vw"
+        face.style.width = ((theImageSize/100)*theLeftSide.clientWidth) + "px"
+        face.style.height = ((theImageSize/100)*theLeftSide.clientWidth) + "px"
         // console.log(theImageSize)
         let randomTop = Math.floor((Math.random() * 100) + 1);
         let randomLeft = Math.floor((Math.random() * 100) + 1);
