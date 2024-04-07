@@ -14,7 +14,7 @@ let imgPath = require("./img/smile.png");
 
 let theMaxWidth = 50;
 let theMaxHeight = 50;
-let theImageSize = 10;
+let theImageSize = 5;
 
 let startAmount = 1;
 let numberOfFaces = startAmount;
@@ -59,7 +59,7 @@ function firstLoad() {
         require("url:./audio/buzzer.mp3"),
         require("url:./audio/film-countdown.mp3")
     ];
-    
+
     addSound(mySounds[0], "sound");
     addSound(mySounds[1], "wrong");
     addSound(mySounds[2], "timeUp");
@@ -219,23 +219,24 @@ function setGameSize() {
 
 }
 function generateFaces() {
-
     setGameSize();
 
     for (let i = 0; i < numberOfFaces; i++) {
         const face = document.createElement("img");
         face.src = imgPath;
-        face.style.width = ((theImageSize/100)*theLeftSide.clientWidth) + "px"
-        face.style.height = ((theImageSize/100)*theLeftSide.clientWidth) + "px"
-        // console.log(theImageSize)
+        //theImageSize is an integer that represents a percentage value
+        //This multiplies it by the width of the box to get a pixel value
+        face.style.width = ((theImageSize / 100) * theLeftSide.clientWidth) + "px"
+        face.style.height = ((theImageSize / 100) * theLeftSide.clientWidth) + "px"
+
         let randomTop = Math.floor((Math.random() * 100) + 1);
         let randomLeft = Math.floor((Math.random() * 100) + 1);
 
-        randomLeft-=  (((theImageSize/100)*document.body.clientWidth) / theLeftSide.clientWidth)*100;
-        randomLeft = randomLeft<1 ? 1 : randomLeft
+        randomLeft -= theImageSize;
+        randomLeft = randomLeft < 1 ? 1 : randomLeft
 
-        randomTop-=  (((theImageSize/100)*document.body.clientHeight) / theLeftSide.clientHeight)*100;
-        randomTop = randomTop<1 ? 1 : randomTop
+        randomTop -= theImageSize;
+        randomTop = randomTop < 1 ? 1 : randomTop
 
         face.style.top = randomTop + "%";//theGameSizeUnit;
         face.style.left = randomLeft + "%";// theGameSizeUnit;
@@ -246,7 +247,7 @@ function generateFaces() {
     const leftSideImages = theLeftSide.cloneNode(true);
 
     leftSideImages.removeChild(leftSideImages.lastChild);
-    //alert(leftSideImages.childNodes.length)
+
     for (let node of leftSideImages.childNodes) {
         theRightSide.appendChild(node.cloneNode());
     }
@@ -255,7 +256,7 @@ function generateFaces() {
     theLeftSide.lastElementChild.removeEventListener('click', wrongAnswer);
     //console.log(numberOfFaces);
 
-    //Skip to lvl 100
+    //Skip to lvl 100 (For testing)
     // if (roundNumber < 100){
     //     nextLevel();
     // }
@@ -390,10 +391,10 @@ function setDifficulty(level = 1) {
     for (let i = level; i < 11; i++) {
         numberOfLives += 1;
         startBonus -= 200;
-        theImageSize += 1;
+        theImageSize += 1.5;
         difficultyGain -= 1;
         timeLimit += 100;
-        timeLeft+=100;
+        timeLeft += 100;
     }
     if (theImageSize <= 0) theImageSize = .5;
 }
@@ -418,7 +419,7 @@ function addRoundTimeRecord(time) {
 }
 
 function slideUpdate() {
-    
+
     let tempText = "";
     let smileySrc = require("./img/smile.png");
 
@@ -465,6 +466,7 @@ function slideUpdate() {
             break;
 
     }
+
     defaultValues();
     setDifficulty(parseInt(theSlider.value));
     updateHealth(numberOfLives);
@@ -472,7 +474,7 @@ function slideUpdate() {
     const bgColorMath = (20 * parseInt(theSlider.value))
     document.documentElement.style.setProperty("--background-color-var", `${bgColorMath}`)
     document.getElementById("diffHead").textContent = "Difficulty: " + parseInt(theSlider.value);
-    document.getElementById("smiley1").src= smileySrc;
+    document.getElementById("smiley1").src = smileySrc;
     document.getElementById("smiley2").setAttribute("src", smileySrc);
     imgPath = smileySrc;
     boxText.textContent = tempText;
